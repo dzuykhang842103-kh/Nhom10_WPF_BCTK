@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="Nhom10_QuanLyLichThiDauBongDa.Views.Controls.ThongKeUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Nhom10_QuanLyLichThiDauBongDa.ViewModels"
+             Background="White">
+
+    <UserControl.DataContext>
+        <vm:ThongKeViewModel/>
+    </UserControl.DataContext>
+
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="6.5*"/>
+            <!-- Cột cho Bảng xếp hạng Đội bóng -->
+            <ColumnDefinition Width="20"/>
+            <!-- Khoảng trống ở giữa -->
+            <ColumnDefinition Width="3.5*"/>
+            <!-- Cột cho Vua phá lưới -->
+        </Grid.ColumnDefinitions>
+
+        <!-- ================= BÊN TRÁI: BẢNG XẾP HẠNG ĐỘI BÓNG ================= -->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="BẢNG XẾP HẠNG GIẢI ĐẤU" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PrimaryColor}" Margin="0,0,0,20"/>
+
+            <DataGrid Grid.Row="1" ItemsSource="{Binding DanhSachXepHang}" 
+                      AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+                      Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1" RowHeight="40" 
+                      GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#F0F2F5">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Hạng" Binding="{Binding STT}" Width="60">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="Đội Bóng" Binding="{Binding TenDoi}" Width="*" FontWeight="Bold" Foreground="{StaticResource PrimaryColor}"/>
+                    <DataGridTextColumn Header="Trận" Binding="{Binding SoTran}" Width="50"/>
+                    <DataGridTextColumn Header="Thắng" Binding="{Binding Thang}" Width="50"/>
+                    <DataGridTextColumn Header="Hòa" Binding="{Binding Hoa}" Width="50"/>
+                    <DataGridTextColumn Header="Thua" Binding="{Binding Thua}" Width="50"/>
+                    <DataGridTextColumn Header="BT" Binding="{Binding BanThang}" Width="45" ToolTipService.ToolTip="Bàn Thắng"/>
+                    <DataGridTextColumn Header="BB" Binding="{Binding BanThua}" Width="45" ToolTipService.ToolTip="Bàn Bại / Bàn Thua"/>
+                    <DataGridTextColumn Header="HS" Binding="{Binding HieuSo}" Width="45" ToolTipService.ToolTip="Hiệu Số"/>
+
+                    <DataGridTextColumn Header="Điểm" Binding="{Binding DiemSo}" Width="60">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="#E74C3C"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <!-- ================= BÊN PHẢI: TOP GHI BÀN ================= -->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="TOP VUA PHÁ LƯỚI" FontSize="22" FontWeight="Bold" Foreground="#E67E22" Margin="0,0,0,20"/>
+
+            <DataGrid Grid.Row="1" ItemsSource="{Binding DanhSachVuaPhaLuoi}" 
+                      AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+                      Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1" RowHeight="40" 
+                      GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#F0F2F5">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Hạng" Binding="{Binding STT}" Width="50">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="#7F8C8D"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="Cầu thủ" Binding="{Binding TenCauThu}" Width="*" FontWeight="SemiBold"/>
+
+                    <DataGridTextColumn Header="Bàn thắng" Binding="{Binding SoBanThang}" Width="80">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="#27AE60"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f18a87ebe4034cac842033f70354d863" Name="Diagram1">
+        <EntityTypeShape EntityType="Nhom10_QuanLyBongDaModel.CauThu" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Nhom10_QuanLyBongDaModel.DoiBong" Width="1.5" PointX="0.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Nhom10_QuanLyBongDaModel.NguoiDung" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Nhom10_QuanLyBongDaModel.SuKienTranDau" Width="1.5" PointX="5.25" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Nhom10_QuanLyBongDaModel.TranDau" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <AssociationConnector Association="Nhom10_QuanLyBongDaModel.FK_CauThu_DoiBong" ManuallyRouted="false" />
+        <AssociationConnector Association="Nhom10_QuanLyBongDaModel.FK_SuKien_CauThu" ManuallyRouted="false" />
+        <AssociationConnector Association="Nhom10_QuanLyBongDaModel.FK_TranDau_DoiKhach" ManuallyRouted="false" />
+        <AssociationConnector Association="Nhom10_QuanLyBongDaModel.FK_TranDau_DoiNha" ManuallyRouted="false" />
+        <AssociationConnector Association="Nhom10_QuanLyBongDaModel.FK_SuKien_TranDau" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

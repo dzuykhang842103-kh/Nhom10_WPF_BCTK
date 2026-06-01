@@ -1,0 +1,408 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Nhom10_QuanLyBongDaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CauThu">
+          <Key>
+            <PropertyRef Name="MaCauThu" />
+          </Key>
+          <Property Name="MaCauThu" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Tuoi" Type="int" />
+          <Property Name="ViTri" Type="nvarchar" MaxLength="50" />
+          <Property Name="SoAo" Type="int" />
+          <Property Name="SoBanThang" Type="int" />
+          <Property Name="MaDoiBong" Type="int" />
+          <Property Name="HinhAnh" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="DoiBong">
+          <Key>
+            <PropertyRef Name="MaDoiBong" />
+          </Key>
+          <Property Name="MaDoiBong" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenDoi" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ThanhPho" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SanVanDong" Type="nvarchar" MaxLength="100" />
+          <Property Name="HuanLuyenVien" Type="nvarchar" MaxLength="100" />
+          <Property Name="DuongDanLogo" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="NguoiDung">
+          <Key>
+            <PropertyRef Name="MaNguoiDung" />
+          </Key>
+          <Property Name="MaNguoiDung" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenDangNhap" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MatKhau" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="VaiTro" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="TrangThai" Type="bit" />
+        </EntityType>
+        <EntityType Name="SuKienTranDau">
+          <Key>
+            <PropertyRef Name="MaSuKien" />
+          </Key>
+          <Property Name="MaSuKien" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaTranDau" Type="int" Nullable="false" />
+          <Property Name="MaCauThu" Type="int" Nullable="false" />
+          <Property Name="LoaiSuKien" Type="nvarchar" MaxLength="50" />
+          <Property Name="PhutThu" Type="int" />
+        </EntityType>
+        <EntityType Name="TranDau">
+          <Key>
+            <PropertyRef Name="MaTranDau" />
+          </Key>
+          <Property Name="MaTranDau" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaDoiNha" Type="int" Nullable="false" />
+          <Property Name="MaDoiKhach" Type="int" Nullable="false" />
+          <Property Name="NgayThiDau" Type="datetime" Nullable="false" />
+          <Property Name="VongDau" Type="int" Nullable="false" />
+          <Property Name="BanThangNha" Type="int" />
+          <Property Name="BanThangKhach" Type="int" />
+          <Property Name="TrangThai" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_CauThu_DoiBong">
+          <End Role="DoiBong" Type="Self.DoiBong" Multiplicity="0..1" />
+          <End Role="CauThu" Type="Self.CauThu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DoiBong">
+              <PropertyRef Name="MaDoiBong" />
+            </Principal>
+            <Dependent Role="CauThu">
+              <PropertyRef Name="MaDoiBong" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuKien_CauThu">
+          <End Role="CauThu" Type="Self.CauThu" Multiplicity="1" />
+          <End Role="SuKienTranDau" Type="Self.SuKienTranDau" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CauThu">
+              <PropertyRef Name="MaCauThu" />
+            </Principal>
+            <Dependent Role="SuKienTranDau">
+              <PropertyRef Name="MaCauThu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuKien_TranDau">
+          <End Role="TranDau" Type="Self.TranDau" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SuKienTranDau" Type="Self.SuKienTranDau" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TranDau">
+              <PropertyRef Name="MaTranDau" />
+            </Principal>
+            <Dependent Role="SuKienTranDau">
+              <PropertyRef Name="MaTranDau" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TranDau_DoiKhach">
+          <End Role="DoiBong" Type="Self.DoiBong" Multiplicity="1" />
+          <End Role="TranDau" Type="Self.TranDau" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DoiBong">
+              <PropertyRef Name="MaDoiBong" />
+            </Principal>
+            <Dependent Role="TranDau">
+              <PropertyRef Name="MaDoiKhach" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TranDau_DoiNha">
+          <End Role="DoiBong" Type="Self.DoiBong" Multiplicity="1" />
+          <End Role="TranDau" Type="Self.TranDau" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DoiBong">
+              <PropertyRef Name="MaDoiBong" />
+            </Principal>
+            <Dependent Role="TranDau">
+              <PropertyRef Name="MaDoiNha" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Nhom10_QuanLyBongDaModelStoreContainer">
+          <EntitySet Name="CauThu" EntityType="Self.CauThu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DoiBong" EntityType="Self.DoiBong" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NguoiDung" EntityType="Self.NguoiDung" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SuKienTranDau" EntityType="Self.SuKienTranDau" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TranDau" EntityType="Self.TranDau" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CauThu_DoiBong" Association="Self.FK_CauThu_DoiBong">
+            <End Role="DoiBong" EntitySet="DoiBong" />
+            <End Role="CauThu" EntitySet="CauThu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuKien_CauThu" Association="Self.FK_SuKien_CauThu">
+            <End Role="CauThu" EntitySet="CauThu" />
+            <End Role="SuKienTranDau" EntitySet="SuKienTranDau" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuKien_TranDau" Association="Self.FK_SuKien_TranDau">
+            <End Role="TranDau" EntitySet="TranDau" />
+            <End Role="SuKienTranDau" EntitySet="SuKienTranDau" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TranDau_DoiKhach" Association="Self.FK_TranDau_DoiKhach">
+            <End Role="DoiBong" EntitySet="DoiBong" />
+            <End Role="TranDau" EntitySet="TranDau" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TranDau_DoiNha" Association="Self.FK_TranDau_DoiNha">
+            <End Role="DoiBong" EntitySet="DoiBong" />
+            <End Role="TranDau" EntitySet="TranDau" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Nhom10_QuanLyBongDaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CauThu">
+          <Key>
+            <PropertyRef Name="MaCauThu" />
+          </Key>
+          <Property Name="MaCauThu" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HoTen" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Tuoi" Type="Int32" />
+          <Property Name="ViTri" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SoAo" Type="Int32" />
+          <Property Name="SoBanThang" Type="Int32" />
+          <Property Name="MaDoiBong" Type="Int32" />
+          <NavigationProperty Name="DoiBong" Relationship="Self.FK_CauThu_DoiBong" FromRole="CauThu" ToRole="DoiBong" />
+          <NavigationProperty Name="SuKienTranDaus" Relationship="Self.FK_SuKien_CauThu" FromRole="CauThu" ToRole="SuKienTranDau" />
+          <Property Name="HinhAnh" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DoiBong">
+          <Key>
+            <PropertyRef Name="MaDoiBong" />
+          </Key>
+          <Property Name="MaDoiBong" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenDoi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ThanhPho" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SanVanDong" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HuanLuyenVien" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DuongDanLogo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CauThus" Relationship="Self.FK_CauThu_DoiBong" FromRole="DoiBong" ToRole="CauThu" />
+          <NavigationProperty Name="TranDaus" Relationship="Self.FK_TranDau_DoiKhach" FromRole="DoiBong" ToRole="TranDau" />
+          <NavigationProperty Name="TranDaus1" Relationship="Self.FK_TranDau_DoiNha" FromRole="DoiBong" ToRole="TranDau" />
+        </EntityType>
+        <EntityType Name="NguoiDung">
+          <Key>
+            <PropertyRef Name="MaNguoiDung" />
+          </Key>
+          <Property Name="MaNguoiDung" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenDangNhap" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MatKhau" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VaiTro" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TrangThai" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="SuKienTranDau">
+          <Key>
+            <PropertyRef Name="MaSuKien" />
+          </Key>
+          <Property Name="MaSuKien" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaTranDau" Type="Int32" Nullable="false" />
+          <Property Name="MaCauThu" Type="Int32" Nullable="false" />
+          <Property Name="LoaiSuKien" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhutThu" Type="Int32" />
+          <NavigationProperty Name="CauThu" Relationship="Self.FK_SuKien_CauThu" FromRole="SuKienTranDau" ToRole="CauThu" />
+          <NavigationProperty Name="TranDau" Relationship="Self.FK_SuKien_TranDau" FromRole="SuKienTranDau" ToRole="TranDau" />
+        </EntityType>
+        <EntityType Name="TranDau">
+          <Key>
+            <PropertyRef Name="MaTranDau" />
+          </Key>
+          <Property Name="MaTranDau" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaDoiNha" Type="Int32" Nullable="false" />
+          <Property Name="MaDoiKhach" Type="Int32" Nullable="false" />
+          <Property Name="NgayThiDau" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="VongDau" Type="Int32" Nullable="false" />
+          <Property Name="BanThangNha" Type="Int32" />
+          <Property Name="BanThangKhach" Type="Int32" />
+          <Property Name="TrangThai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DoiBong" Relationship="Self.FK_TranDau_DoiKhach" FromRole="TranDau" ToRole="DoiBong" />
+          <NavigationProperty Name="DoiBong1" Relationship="Self.FK_TranDau_DoiNha" FromRole="TranDau" ToRole="DoiBong" />
+          <NavigationProperty Name="SuKienTranDaus" Relationship="Self.FK_SuKien_TranDau" FromRole="TranDau" ToRole="SuKienTranDau" />
+        </EntityType>
+        <Association Name="FK_CauThu_DoiBong">
+          <End Role="DoiBong" Type="Self.DoiBong" Multiplicity="0..1" />
+          <End Role="CauThu" Type="Self.CauThu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DoiBong">
+              <PropertyRef Name="MaDoiBong" />
+            </Principal>
+            <Dependent Role="CauThu">
+              <PropertyRef Name="MaDoiBong" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuKien_CauThu">
+          <End Role="CauThu" Type="Self.CauThu" Multiplicity="1" />
+          <End Role="SuKienTranDau" Type="Self.SuKienTranDau" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CauThu">
+              <PropertyRef Name="MaCauThu" />
+            </Principal>
+            <Dependent Role="SuKienTranDau">
+              <PropertyRef Name="MaCauThu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TranDau_DoiKhach">
+          <End Role="DoiBong" Type="Self.DoiBong" Multiplicity="1" />
+          <End Role="TranDau" Type="Self.TranDau" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DoiBong">
+              <PropertyRef Name="MaDoiBong" />
+            </Principal>
+            <Dependent Role="TranDau">
+              <PropertyRef Name="MaDoiKhach" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TranDau_DoiNha">
+          <End Role="DoiBong" Type="Self.DoiBong" Multiplicity="1" />
+          <End Role="TranDau" Type="Self.TranDau" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DoiBong">
+              <PropertyRef Name="MaDoiBong" />
+            </Principal>
+            <Dependent Role="TranDau">
+              <PropertyRef Name="MaDoiNha" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuKien_TranDau">
+          <End Role="TranDau" Type="Self.TranDau" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SuKienTranDau" Type="Self.SuKienTranDau" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TranDau">
+              <PropertyRef Name="MaTranDau" />
+            </Principal>
+            <Dependent Role="SuKienTranDau">
+              <PropertyRef Name="MaTranDau" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Nhom10_QuanLyBongDaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CauThus" EntityType="Self.CauThu" />
+          <EntitySet Name="DoiBongs" EntityType="Self.DoiBong" />
+          <EntitySet Name="NguoiDungs" EntityType="Self.NguoiDung" />
+          <EntitySet Name="SuKienTranDaus" EntityType="Self.SuKienTranDau" />
+          <EntitySet Name="TranDaus" EntityType="Self.TranDau" />
+          <AssociationSet Name="FK_CauThu_DoiBong" Association="Self.FK_CauThu_DoiBong">
+            <End Role="DoiBong" EntitySet="DoiBongs" />
+            <End Role="CauThu" EntitySet="CauThus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuKien_CauThu" Association="Self.FK_SuKien_CauThu">
+            <End Role="CauThu" EntitySet="CauThus" />
+            <End Role="SuKienTranDau" EntitySet="SuKienTranDaus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TranDau_DoiKhach" Association="Self.FK_TranDau_DoiKhach">
+            <End Role="DoiBong" EntitySet="DoiBongs" />
+            <End Role="TranDau" EntitySet="TranDaus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TranDau_DoiNha" Association="Self.FK_TranDau_DoiNha">
+            <End Role="DoiBong" EntitySet="DoiBongs" />
+            <End Role="TranDau" EntitySet="TranDaus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuKien_TranDau" Association="Self.FK_SuKien_TranDau">
+            <End Role="TranDau" EntitySet="TranDaus" />
+            <End Role="SuKienTranDau" EntitySet="SuKienTranDaus" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Nhom10_QuanLyBongDaModelStoreContainer" CdmEntityContainer="Nhom10_QuanLyBongDaEntities">
+          <EntitySetMapping Name="CauThus">
+            <EntityTypeMapping TypeName="Nhom10_QuanLyBongDaModel.CauThu">
+              <MappingFragment StoreEntitySet="CauThu">
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+                <ScalarProperty Name="MaCauThu" ColumnName="MaCauThu" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="Tuoi" ColumnName="Tuoi" />
+                <ScalarProperty Name="ViTri" ColumnName="ViTri" />
+                <ScalarProperty Name="SoAo" ColumnName="SoAo" />
+                <ScalarProperty Name="SoBanThang" ColumnName="SoBanThang" />
+                <ScalarProperty Name="MaDoiBong" ColumnName="MaDoiBong" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DoiBongs">
+            <EntityTypeMapping TypeName="Nhom10_QuanLyBongDaModel.DoiBong">
+              <MappingFragment StoreEntitySet="DoiBong">
+                <ScalarProperty Name="MaDoiBong" ColumnName="MaDoiBong" />
+                <ScalarProperty Name="TenDoi" ColumnName="TenDoi" />
+                <ScalarProperty Name="ThanhPho" ColumnName="ThanhPho" />
+                <ScalarProperty Name="SanVanDong" ColumnName="SanVanDong" />
+                <ScalarProperty Name="HuanLuyenVien" ColumnName="HuanLuyenVien" />
+                <ScalarProperty Name="DuongDanLogo" ColumnName="DuongDanLogo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NguoiDungs">
+            <EntityTypeMapping TypeName="Nhom10_QuanLyBongDaModel.NguoiDung">
+              <MappingFragment StoreEntitySet="NguoiDung">
+                <ScalarProperty Name="MaNguoiDung" ColumnName="MaNguoiDung" />
+                <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="VaiTro" ColumnName="VaiTro" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SuKienTranDaus">
+            <EntityTypeMapping TypeName="Nhom10_QuanLyBongDaModel.SuKienTranDau">
+              <MappingFragment StoreEntitySet="SuKienTranDau">
+                <ScalarProperty Name="MaSuKien" ColumnName="MaSuKien" />
+                <ScalarProperty Name="MaTranDau" ColumnName="MaTranDau" />
+                <ScalarProperty Name="MaCauThu" ColumnName="MaCauThu" />
+                <ScalarProperty Name="LoaiSuKien" ColumnName="LoaiSuKien" />
+                <ScalarProperty Name="PhutThu" ColumnName="PhutThu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TranDaus">
+            <EntityTypeMapping TypeName="Nhom10_QuanLyBongDaModel.TranDau">
+              <MappingFragment StoreEntitySet="TranDau">
+                <ScalarProperty Name="MaTranDau" ColumnName="MaTranDau" />
+                <ScalarProperty Name="MaDoiNha" ColumnName="MaDoiNha" />
+                <ScalarProperty Name="MaDoiKhach" ColumnName="MaDoiKhach" />
+                <ScalarProperty Name="NgayThiDau" ColumnName="NgayThiDau" />
+                <ScalarProperty Name="VongDau" ColumnName="VongDau" />
+                <ScalarProperty Name="BanThangNha" ColumnName="BanThangNha" />
+                <ScalarProperty Name="BanThangKhach" ColumnName="BanThangKhach" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
