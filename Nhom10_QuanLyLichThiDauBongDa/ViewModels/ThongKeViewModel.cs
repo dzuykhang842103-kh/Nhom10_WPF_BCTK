@@ -42,7 +42,6 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
             set { _danhSachXepHang = value; OnPropertyChanged(); }
         }
 
-        // Collection mới để bind ra giao diện
         private ObservableCollection<VuaPhaLuoiItem> _danhSachVuaPhaLuoi;
         public ObservableCollection<VuaPhaLuoiItem> DanhSachVuaPhaLuoi
         {
@@ -65,9 +64,6 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
             {
                 using (var db = new Nhom10_QuanLyBongDaEntities())
                 {
-                    // ==============================================================
-                    // PHẦN 1: TÍNH TOÁN BẢNG XẾP HẠNG ĐỘI BÓNG (Giữ nguyên)
-                    // ==============================================================
                     var listDoiBong = db.DoiBongs.ToList();
                     var listTranDau = db.TranDaus.Where(t => t.TrangThai == "Kết thúc").ToList();
 
@@ -121,12 +117,6 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
 
                     DanhSachXepHang = new ObservableCollection<BangXepHangItem>(sortedList);
 
-                    // ==============================================================
-                    // PHẦN 2: TRUY VẤN DANH SÁCH VUA PHÁ LƯỚI (MỚI THÊM)
-                    // ==============================================================
-                    
-                    // LINQ: Lấy Cầu thủ -> Kèm thông tin Đội bóng -> Chỉ lấy ai có bàn thắng 
-                    // -> Sắp xếp giảm dần -> Lấy Top 10 người cao nhất
                     var topGhiBanDb = db.CauThus.Include("DoiBong")
                                                 .Where(c => c.SoBanThang > 0)
                                                 .OrderByDescending(c => c.SoBanThang)

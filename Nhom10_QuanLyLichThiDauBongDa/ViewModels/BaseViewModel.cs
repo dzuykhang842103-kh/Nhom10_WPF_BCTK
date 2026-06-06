@@ -9,7 +9,6 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // Cờ phân quyền toàn cục cho toàn bộ các ViewModels kế thừa
         public Visibility AdminVisibility => CurrentSession.IsAdmin ? Visibility.Visible : Visibility.Collapsed;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

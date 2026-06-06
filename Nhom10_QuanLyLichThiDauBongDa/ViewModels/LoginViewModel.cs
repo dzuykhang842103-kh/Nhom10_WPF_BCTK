@@ -30,6 +30,7 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
         #region Commands
         public ICommand LoginCommand { get; set; }
         public ICommand CloseCommand { get; set; }
+        public ICommand OpenForgotPassCommand { get; set; } 
         #endregion
 
         #region Constructor
@@ -37,6 +38,7 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
         {
             LoginCommand = new RelayCommand(ExecuteLogin);
             CloseCommand = new RelayCommand(ExecuteClose);
+            OpenForgotPassCommand = new RelayCommand(ExecuteOpenForgotPass); 
         }
         #endregion
 
@@ -100,6 +102,12 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
         private void ExecuteClose(object parameter)
         {
             Application.Current.Shutdown();
+        }
+
+        private void ExecuteOpenForgotPass(object parameter)
+        {
+            QuenMatKhauWindow forgotWindow = new QuenMatKhauWindow();
+            forgotWindow.ShowDialog();
         }
         #endregion
     }

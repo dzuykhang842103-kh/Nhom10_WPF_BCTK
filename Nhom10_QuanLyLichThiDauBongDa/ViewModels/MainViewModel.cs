@@ -36,7 +36,6 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
         #region Constructor
         public MainViewModel()
         {
-            // Tự động nhận diện người dùng từ Session
             if (CurrentSession.LoggedInUser != null)
             {
                 CurrentUserInfo = "Xin chào, " + CurrentSession.LoggedInUser.HoTen;
@@ -46,7 +45,6 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
                 CurrentUserInfo = "Xin chào, Admin";
             }
 
-            // Khởi tạo các lệnh điều hướng
             ShowDoiBongCommand = new RelayCommand(ExecuteShowDoiBong);
             ShowCauThuCommand = new RelayCommand(ExecuteShowCauThu);
             ShowLichThiDauCommand = new RelayCommand(ExecuteShowLichThiDau);

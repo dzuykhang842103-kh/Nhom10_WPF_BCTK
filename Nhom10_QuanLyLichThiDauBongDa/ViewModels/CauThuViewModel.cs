@@ -114,6 +114,7 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
         public ICommand XoaCommand { get; set; }
         public ICommand LamMoiCommand { get; set; }
         public ICommand ChonAnhCommand { get; set; }
+        public ICommand InBaoCaoCommand { get; set; }
         #endregion
 
         public CauThuViewModel()
@@ -124,6 +125,7 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
             XoaCommand = new RelayCommand(ExecuteXoa);
             LamMoiCommand = new RelayCommand(ExecuteLamMoi);
             ChonAnhCommand = new RelayCommand(ExecuteChonAnh);
+            //InBaoCaoCommand = new RelayCommand(ExecuteInBaoCao);
         }
 
         #region Methods
@@ -190,6 +192,10 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
 
                     File.Copy(dialog.FileName, destFilePath, true);
                     HinhAnh = destFilePath;
+                    if (SelectedCauThu != null)
+                    {
+                        SelectedCauThu.HinhAnh = destFilePath;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -289,12 +295,25 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
                 return;
             }
 
-            var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa cầu thủ {SelectedCauThu.HoTen}?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
+            try
             {
-                try
+                using (var db = new Nhom10_QuanLyBongDaEntities())
                 {
-                    using (var db = new Nhom10_QuanLyBongDaEntities())
+                    bool isTeamPlaying = db.TranDaus.Any(t =>
+                        (t.MaDoiNha == SelectedCauThu.MaDoiBong || t.MaDoiKhach == SelectedCauThu.MaDoiBong)
+                        && t.TrangThai == "Đang thi đấu");
+
+                    if (isTeamPlaying)
+                    {
+                        MessageBox.Show($"Không thể xóa cầu thủ {SelectedCauThu.HoTen} lúc này!\n\nLý do: Đội bóng chủ quản đang có trận đấu diễn ra trên sân.\nHướng xử lý: Vui lòng đợi trận đấu kết thúc hoặc cập nhật lại trạng thái trận đấu.",
+                                        "Thông báo từ hệ thống",
+                                        MessageBoxButton.OK,
+                                        MessageBoxImage.Warning);
+                        return; 
+                    }
+
+                    var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa cầu thủ {SelectedCauThu.HoTen}?", "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
                     {
                         var cauThuXoa = db.CauThus.Find(SelectedCauThu.MaCauThu);
                         if (cauThuXoa != null)
@@ -302,15 +321,15 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
                             db.CauThus.Remove(cauThuXoa);
                             db.SaveChanges();
                         }
+                        MessageBox.Show("Đã xóa cầu thủ thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                        LoadData();
+                        ExecuteLamMoi(null);
                     }
-                    MessageBox.Show("Đã xóa cầu thủ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                    LoadData();
-                    ExecuteLamMoi(null);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi xóa cầu thủ: " + ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Rất tiếc, đã xảy ra sự cố khi thực hiện thao tác: " + ex.Message, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -324,6 +343,19 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
             SelectedCauThu = null;
             HinhAnh = null;
         }
+
+        //private void ExecuteInBaoCao(object obj)
+        //{
+        //    // Lấy thông tin từ Combobox Filter hiện tại
+        //    int maDoi = SelectedFilterDoiBong != null ? SelectedFilterDoiBong.MaDoiBong : 0;
+        //    string tenDoi = SelectedFilterDoiBong != null ? SelectedFilterDoiBong.TenDoi : "Tất cả các đội";
+
+        //    if (maDoi == 0) tenDoi = "TẤT CẢ CÁC ĐỘI BÓNG"; // Format lại chữ cho đẹp
+
+        //    // Mở form Báo cáo và truyền tham số sang
+        //    var reportWin = new Views.BaoCaoWindow(maDoi, tenDoi);
+        //    reportWin.ShowDialog();
+        //}
 
         private bool ValidateInput(out int tuoiInt, out int soAoInt)
         {

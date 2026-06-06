@@ -23,7 +23,7 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
         public ObservableCollection<SuKienTranDau> DanhSachSuKien
         {
             get => _danhSachSuKien;
-            set { _danhSachSuKien = value; OnPropertyChanged(); } // Lệnh "hét" thần thánh
+            set { _danhSachSuKien = value; OnPropertyChanged(); } 
         }
 
         public List<string> DanhSachLoaiSuKien { get; set; } = new List<string>
@@ -157,7 +157,6 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
                         var tranDauDb = db.TranDaus.Find(skDb.MaTranDau);
                         var cauThuDb = db.CauThus.Find(skDb.MaCauThu);
 
-                        // LOGIC TRỪ NGƯỢC BÀN THẮNG BẢO VỆ TOÀN VẸN DỮ LIỆU
                         if (skDb.LoaiSuKien == "Ghi bàn")
                         {
                             // Trừ điểm của đội
@@ -174,17 +173,14 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
                             else tranDauDb.BanThangNha -= 1;
                         }
 
-                        // Xóa sự kiện khỏi bảng Chi tiết
                         db.SuKienTranDaus.Remove(skDb);
 
-                        // Nếu xóa hết sự kiện mà tỉ số về 0-0, có thể cân nhắc đổi trạng thái về "Chưa diễn ra"
-                        // Ở đây ta giữ nguyên trạng thái "Đang thi đấu" để an toàn.
-
+                       
                         db.SaveChanges();
                     }
                 }
                 MessageBox.Show("Đã xóa sự kiện và cập nhật lại tỉ số thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                LoadData(); // Load lại giao diện để Header tự động nhảy số
+                LoadData(); 
             }
             catch (Exception ex)
             {

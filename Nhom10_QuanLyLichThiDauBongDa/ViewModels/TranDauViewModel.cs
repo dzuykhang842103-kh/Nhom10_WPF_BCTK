@@ -305,7 +305,7 @@ namespace Nhom10_QuanLyLichThiDauBongDa.ViewModels
                 }
             }
         }
-
+        
         private void ExecuteLamMoi(object obj)
         {
             SelectedDoiNha = null;
